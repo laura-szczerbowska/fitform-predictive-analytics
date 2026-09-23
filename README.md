@@ -1,6 +1,7 @@
 <div align="right">
   <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
+
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
 <br>
@@ -131,7 +132,7 @@ Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze wz
 
 <br>
 
-### Analiza scenariuszowa What-If
+## Analiza scenariuszowa What-If
 
 Weryfikacja dobowych predykcji na osi czasu względem danych empirycznych dla profilu o najwyższej zmienności wagi:
 Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje stabilność modeli w 30-dniowym horyzoncie czasowym przy zadanym scenariuszu behawioralnym (np. waga początkowa 85 kg, deficyt kaloryczny, 14 000 kroków, trening siłowy):
@@ -141,7 +142,7 @@ Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje 
 <br>
 
 
-### Dopasowanie w czasie
+## Dopasowanie w czasie
 Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
 
 ![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
@@ -151,7 +152,7 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 <br>
 
 
-### 5. Wyjaśnialność modeli
+## 5. Wyjaśnialność modeli
 
 #### Permutation Feature Importance (PFI)
 Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
