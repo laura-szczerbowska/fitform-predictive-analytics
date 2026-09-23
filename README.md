@@ -1,6 +1,7 @@
 <div align="right">
   <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
+
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
 <br>
@@ -10,7 +11,7 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
 <br>
-
+<br>
 
   <p align="center">
     <img src="static/shap_summary.png" alt="SHAP Summary" width="700">
