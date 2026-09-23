@@ -110,7 +110,7 @@ Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników m
 
 ### Porównanie 10 modeli regresyjnych
 Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli liniowych, przez algorytmy oparte na sąsiedztwie (KNN) i maszynach wektorów nośnych (SVM), aż po metody boostingowe i dedykowany model Ensemble (`VotingRegressor`).
-
+<br>
 
 | Model | MAE mean CV [kg] | RMSE mean CV [kg] | R² mean CV | Test MAE [kg] | Test RMSE [kg] | Test R² |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -127,8 +127,10 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 | **Elastic Net** | 0.0273 | 0.0341 | -0.0450 | 0.0252 | 0.0326 | -0.0041 |
 
 *[Pełen zestawienie metryk: static/models_comparison.csv](static/models_comparison.csv)*
+
 <br>
-#### Wnioski z tabeli
+
+### Wnioski z tabeli
 <br>
 <br>
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
@@ -138,6 +140,7 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?)**
 Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
 
+<br>
 <br>
 
 ## Analiza scenariuszowa What-If
@@ -153,8 +156,6 @@ Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje 
 ## 5. Wyjaśnialność modeli
 
 #### Dopasowanie w czasie
-
-<br>
 
 Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
 <br>
@@ -179,7 +180,6 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 
 
 #### SHAP (Shapley Additive Explanations)
-<br>
 
 * **Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
 <br>
