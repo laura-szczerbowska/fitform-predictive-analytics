@@ -70,14 +70,14 @@ Zbiór łączy dwa źródła danych:
 
 <br>
 
-### Czyszczenie i przygotowanie danych (Data Cleaning)
+### 1) Czyszczenie i przygotowanie danych (Data Cleaning)
 * **Uzupełnienie brakujących ważeń:** Nieregularne ważenie obsłużono per użytkownik metodami (`ffill` oraz `bfill`), zapewniając ciągłość bazy pomiarowej do dalszych wyliczeń.
 * **Usunięcie niepełnych wpisów:** Ostatni zarejestrowany wpis każdego profilu został usunięty ze zbioru uczącego, ponieważ nie posiadał kolejnego pomiaru do wyliczenia dobowej zmiany wagi.
 * **Usunięcie błędów i pomyłek:** Jeśli w danych pojawiło się zero (np. brak spalonych kalorii powodujący błąd dzielenia), zamieniono je na puste pole zamiast błędu programu. Dodatkowo odrzucono skrajne 5% największych spadków i wzrostów wagi (percentyle 5% i 95%), eliminując ewidentne pomyłki manualne.
 
 <br>
 
-### Inżynieria cech (Feature Engineering)
+### 2) Inżynieria cech (Feature Engineering)
 * **Wyrównanie nieregularnych interwałów:** Zmienna docelowa (y) to znormalizowana dobowa stopa zmiany wagi, uwzględniająca rzeczywisty odstęp czasu między pomiarami:
 
 $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{dni między ważeniami}}$$
@@ -90,7 +90,7 @@ $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{d
 <br>
 
 
-### Zestaw zmiennych wejściowych (11 cech)
+### 3) Zestaw zmiennych wejściowych (11 cech)
 Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
 * **Energia i bilans:** dobowy bilans kcal, 7-dniowa średnia bilansu kcal, spożyte kalorie, spalone kalorie, kalorie na kg masy ciała.
 * **Odżywianie:** spożycie białka (g) oraz białko na kg masy ciała.
@@ -98,7 +98,7 @@ Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
 
 <br>
 
-### Metodyka podziału i walidacji (Zero Data Leakage)
+### 4) Metodyka podziału i walidacji (Zero Data Leakage)
 Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników może prowadzić do wycieku danych - model uczy się na pamięć cech konkretnej osoby. Zastosowano dwustopniowe zabezpieczenie:
 1. **Podział profili (80/20) i dane empiryczne:** 80% profili użytkowników trafiło do zbioru treningowego, a 20% stanowi całkowicie odizolowany zbiór testowy. Zagwarantowano obecność profili osób rzeczywistych (`user_id 1-5`) w obu częściach, zapobiegając przeuczeniu modelu wyłącznie na syntetycznych wzorcach.
 2. **GroupKFold Cross-Validation:** Walidacja krzyżowa (3 foldy) grupowana ściśle po `user_id`. Modele były sprawdzane wyłącznie na całych profilach użytkowników, których nie widziały w trakcie treningu.
@@ -127,11 +127,13 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 | **Elastic Net** | 0.0273 | 0.0341 | -0.0450 | 0.0252 | 0.0326 | -0.0041 |
 
 *[Pełen zestawienie metryk: static/models_comparison.csv](static/models_comparison.csv)*
-
+<br>
 #### Wnioski z tabeli
+<br>
 <br>
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
 * **Ograniczenia modeli liniowych:** Prosta regresja liniowa osiągnęła $R^2 ≈ 0.77$. Choć oddaje ogólny trend, nie radzi sobie z dobowymi wahaniami.
+<br>
 <br>
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?)**
 Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
