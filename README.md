@@ -1,8 +1,5 @@
-<div align="center">
-
-[![Polski](https://img.shields.io/badge/Język-Polski-red?style=for-the-badge)](#)
-[![English](https://img.shields.io/badge/Language-English-blue?style=for-the-badge)](README_EN.md)
-
+<div align="right">
+  <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
 
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
