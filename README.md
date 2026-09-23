@@ -1,8 +1,6 @@
 <div align="right">
   <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
-
-<br>
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
 <br>
@@ -100,7 +98,7 @@ Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników m
 2. **GroupKFold Cross-Validation:** Walidacja krzyżowa (3 foldy) grupowana ściśle po `user_id`. Modele były sprawdzane wyłącznie na całych profilach użytkowników, których nie widziały w trakcie treningu.
 
 <br>
----
+
 
 ## 4. Wyniki analizy i modele
 
@@ -149,7 +147,6 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 ![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
 
 *Komentarz do wykresu:* Wykres przedstawia 40-dniową symulację krokową. Podczas gdy modele drzewiaste (LightGBM, XGBoost) bezbłędnie utrzymały zadany trend metaboliczny bez efektu dryfu, silnie regularyzowane modele liniowe (Elastic Net) wykazały niedouczenie (underfitting), tłumiąc dobową dynamikę zmian.
----
 
 <br>
 
@@ -173,6 +170,7 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
   **Dominacja średniej kroczącej:** Podobnie jak na wykresie globalnym, najważniejszym motorem zmiany wagi jest **7-dniowy średni bilans** oraz **dobowy bilans kaloryczny**.
   **Zastosowanie w FitForm:** Taka interpretacja pozwala aplikacji wygenerować dla użytkownika jasny komunikat w panelu dziennym: *„Twój prognozowany spadek wagi o ~0.07 kg/dzień wynika w 90% ze stabilnego deficytu kalorycznego z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
 
+<br>
 
 ## 6. Użyte technologie
 
@@ -180,6 +178,10 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 * **Baza danych i backend:** PostgreSQL / Supabase, SQLAlchemy
 * **Machine Learning:** LightGBM, XGBoost, CatBoost, Scikit-learn
 * **Interpretowalność i wizualizacja:** SHAP, Matplotlib
+
+  
+<br>
+
 
 ## 7. Architektura modułu
 
@@ -197,6 +199,7 @@ fitform-predictive-analytics/
 ├── requirements.txt                      # Zależności biblioteczne potoku
 └── train_pipeline.py                     # Potok analityczno-predykcyjny end-to-end
 ```
+<br>
 
 ## 8. Jak uruchomić projekt
 
@@ -218,6 +221,9 @@ Uruchom skrypt w Pythonie:
 python train_pipeline.py
 ```
 
+<br>
+
+
 ## 9. Kierunki dalszego rozwoju
 
 Możliwe rozszerzenia modułu obejmują:
@@ -226,7 +232,7 @@ Możliwe rozszerzenia modułu obejmują:
 * Przetestowanie architektur sekwencyjnych (LSTM / GRU) dla dłuższych horyzontów czasowych
 * Zbudowanie interaktywnego dashboardu analitycznego do śledzenia predykcji
 
----
+<br>
 
 ## 10. Kluczowe wnioski
 
