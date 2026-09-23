@@ -168,8 +168,6 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 
 #### Permutation Feature Importance (PFI)
 
-<br>
-
 Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
 <br>
 ![PFI LightGBM](static/pfi_lightgbm.png)
