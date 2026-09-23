@@ -64,7 +64,7 @@ Eksport wag produkcyjnych (.pkl) dla API backendu
 
 Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
 
-Zbiór łączy dwa źródła danych:
+####Zbiór łączy dwa źródła danych:
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
 
@@ -131,16 +131,16 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 <br>
 
 ### Wnioski z tabeli
-<br>
-<br>
+
+
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
 * **Ograniczenia modeli liniowych:** Prosta regresja liniowa osiągnęła $R^2 ≈ 0.77$. Choć oddaje ogólny trend, nie radzi sobie z dobowymi wahaniami.
+  
 <br>
-<br>
-* **Decyzja wdrożeniowa (Dlaczego LightGBM?)**
-Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
 
-<br>
+* **Decyzja wdrożeniowa (Dlaczego LightGBM?):**  
+    Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
+
 <br>
 
 ## Analiza scenariuszowa What-If
@@ -182,10 +182,10 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 #### SHAP (Shapley Additive Explanations)
 
 * **Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
-<br>
-  ![SHAP Waterfall](static/shap_waterfall.png)
 
-> **Wniosek i powiązanie z SHAP Summary Plot:**  
+    ![SHAP Waterfall](static/shap_waterfall.png)
+
+> **Wniosek i powiązanie z SHAP Summary Plot:**
   > Dekompozycja pojedynczego dnia idealnie potwierdza reguły zaobserwowane w wyżej przedstawionym Summary Plot:
   **Dominacja średniej kroczącej:** Podobnie jak na wykresie globalnym, najważniejszym motorem zmiany wagi jest **7-dniowy średni bilans** oraz **dobowy bilans kaloryczny**.
   **Zastosowanie w FitForm:** Taka interpretacja pozwala aplikacji wygenerować dla użytkownika jasny komunikat w panelu dziennym: *„Twój prognozowany spadek wagi o ~0.07 kg/dzień wynika w 90% ze stabilnego deficytu kalorycznego z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
