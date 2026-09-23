@@ -126,12 +126,13 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 | **SVM (RBF)** | 0.0242 | 0.0283 | 0.2790 | 0.0227 | 0.0270 | 0.3103 |
 | **Elastic Net** | 0.0273 | 0.0341 | -0.0450 | 0.0252 | 0.0326 | -0.0041 |
 
-**[Pełen zestawienie metryk: static/models_comparison.csv](static/models_comparison.csv)**
+*[Pełen zestawienie metryk: static/models_comparison.csv](static/models_comparison.csv)*
 
-
+#### Wnioski z tabeli
+<br>
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
 * **Ograniczenia modeli liniowych:** Prosta regresja liniowa osiągnęła $R^2 ≈ 0.77$. Choć oddaje ogólny trend, nie radzi sobie z dobowymi wahaniami.
-
+<br>
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?)**
 Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
 
@@ -147,8 +148,14 @@ Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje 
 <br>
 
 
-## 5. Dopasowanie w czasie i wyjaśnialność modeli
+## 5. Wyjaśnialność modeli
+
+#### Dopasowanie w czasie
+
+<br>
+
 Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
+<br>
 
 ![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
 
@@ -158,8 +165,11 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 
 
 #### Permutation Feature Importance (PFI)
-Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
 
+<br>
+
+Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
+<br>
 ![PFI LightGBM](static/pfi_lightgbm.png)
 
 >**Wniosek:**
@@ -169,8 +179,10 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 
 
 #### SHAP (Shapley Additive Explanations)
+<br>
 
-* **Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:  
+* **Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
+<br>
   ![SHAP Waterfall](static/shap_waterfall.png)
 
 > **Wniosek i powiązanie z SHAP Summary Plot:**  
