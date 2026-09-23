@@ -7,7 +7,7 @@
 Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzienne dzienniki aktywności i diety w wiarygodne prognozy zmian masy ciała. Projekt rozwiązuje problem nieregularnych wpisów i dobowych wahań wagi, dostarczając silnikowi rekomendacji aplikacji rzetelne wskaźniki decyzyjne oparte na benchmarkingu 10 modeli regresyjnych oraz analizie ważności cech.
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
-* **Globalny wpływ cech (Summary Plot):** Podaż kalorii per kg masy ciała silnie przesuwa prognozę w górę (przyrost wagi), natomiast wydatek kroków i cardio redukuje wynik:  
+* **Globalny wpływ cech (Summary Plot)**: Podaż kalorii per kg masy ciała silnie przesuwa prognozę w górę (przyrost wagi), natomiast wydatek kroków i cardio redukuje wynik:  
   <p align="center">
     <img src="static/shap_summary.png" alt="SHAP Summary" width="700">
   </p>
@@ -17,8 +17,8 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 ## 1. Problem biznesowy
 
 W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na bazie sztywnego deficytu kalorycznego (np. wzór Wishnofsky'ego) zawodzi w kontakcie z rzeczywistym użytkownikiem:
-* **Krótkoterminowe wahania wody:** Masa ciała z dnia na dzień potrafi zmienić się o 1–2 kg pod wpływem diety czy regeneracji po treningu, co nie odzwierciedla faktycznej utraty lub przyrostu tkanki tłuszczowej.
-* **Nieregularność logowania:** Użytkownicy ważą się co 2–4 dni, podczas gdy dane dietetyczne i kroki wprowadzają codziennie.
+* **Krótkoterminowe wahania wody:** Masa ciała z dnia na dzień potrafi zmienić się o 1-2 kg pod wpływem diety czy regeneracji po treningu, co nie odzwierciedla faktycznej utraty lub przyrostu tkanki tłuszczowej.
+* **Nieregularność logowania:** Użytkownicy ważą się co 2-4 dni, podczas gdy dane dietetyczne i kroki wprowadzają codziennie.
 * **Błędy wprowadzania danych:** Skrajne, omyłkowe wpisy manualne zaburzają klasyczne algorytmy uczące.
 
 **Rozwiązanie biznesowe:**  
@@ -71,7 +71,7 @@ $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{d
 
 * **Wygładzanie skoków wagi:** Wyliczenie średnich z ostatnich 7 dni dla bilansu kalorycznego (`bilans_kcal_ma7`), dzięki czemu model widzi ogólny kierunek zmian, a nie przypadkowe wahania z pojedynczego dnia.
 * **Wskaźniki w przeliczeniu na masę ciała:** Zamiast samych kalorii i gramów białka, dodano wartości w przeliczeniu na 1 kg masy ciała (`kcal_na_kg`, `bialko_na_kg`), co pozwala porównywać osoby o różnej wadze.
-* **Wpływ weekendów:** Dodanie znacznika weekendu (sobota–niedziela), aby uwzględnić częstsze odstępstwa od diety i zmiany w aktywności w dni wolne.
+* **Wpływ weekendów:** Dodanie znacznika weekendu (sobota-niedziela), aby uwzględnić częstsze odstępstwa od diety i zmiany w aktywności w dni wolne.
 * **Usuwanie błędnych wpisów:** Obcięcie percentyli 5% i 95% dobowej zmiany wagi w celu odrzucenia ewidentnych pomyłek przy manualnym wpisywaniu pomiarów.
 
 
