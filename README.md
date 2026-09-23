@@ -64,7 +64,7 @@ Eksport wag produkcyjnych (.pkl) dla API backendu
 
 Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
 
-####Zbiór łączy dwa źródła danych:
+#### Zbiór łączy dwa źródła danych:
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
 
@@ -135,9 +135,6 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
 * **Ograniczenia modeli liniowych:** Prosta regresja liniowa osiągnęła $R^2 ≈ 0.77$. Choć oddaje ogólny trend, nie radzi sobie z dobowymi wahaniami.
-  
-<br>
-
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?):**  
     Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
 
