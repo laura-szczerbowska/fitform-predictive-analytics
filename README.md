@@ -68,12 +68,14 @@ Zbiór łączy dwa źródła danych:
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
 
+<br>
 
 ### Czyszczenie i przygotowanie danych (Data Cleaning)
 * **Uzupełnienie brakujących ważeń:** Nieregularne ważenie obsłużono per użytkownik metodami (`ffill` oraz `bfill`), zapewniając ciągłość bazy pomiarowej do dalszych wyliczeń.
 * **Usunięcie niepełnych wpisów:** Ostatni zarejestrowany wpis każdego profilu został usunięty ze zbioru uczącego, ponieważ nie posiadał kolejnego pomiaru do wyliczenia dobowej zmiany wagi.
 * **Usunięcie błędów i pomyłek:** Jeśli w danych pojawiło się zero (np. brak spalonych kalorii powodujący błąd dzielenia), zamieniono je na puste pole zamiast błędu programu. Dodatkowo odrzucono skrajne 5% największych spadków i wzrostów wagi (percentyle 5% i 95%), eliminując ewidentne pomyłki manualne.
 
+<br>
 
 ### Inżynieria cech (Feature Engineering)
 * **Wyrównanie nieregularnych interwałów:** Zmienna docelowa (y) to znormalizowana dobowa stopa zmiany wagi, uwzględniająca rzeczywisty odstęp czasu między pomiarami:
@@ -85,6 +87,8 @@ $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{d
 * **Wpływ weekendów:** Dodanie znacznika weekendu (sobota-niedziela), aby uwzględnić częstsze odstępstwa od diety i zmiany w aktywności w dni wolne.
 * **Usuwanie błędnych wpisów:** Obcięcie percentyli 5% i 95% dobowej zmiany wagi w celu odrzucenia ewidentnych pomyłek przy manualnym wpisywaniu pomiarów.
 
+<br>
+
 
 ### Zestaw zmiennych wejściowych (11 cech)
 Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
@@ -92,6 +96,7 @@ Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
 * **Odżywianie:** spożycie białka (g) oraz białko na kg masy ciała.
 * **Aktywność i styl życia:** trening siłowy (0/1), czas cardio (min), liczba kroków oraz flaga weekendu (0/1).
 
+<br>
 
 ### Metodyka podziału i walidacji (Zero Data Leakage)
 Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników może prowadzić do wycieku danych - model uczy się na pamięć cech konkretnej osoby. Zastosowano dwustopniowe zabezpieczenie:
@@ -142,7 +147,7 @@ Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje 
 <br>
 
 
-## Dopasowanie w czasie
+## 5. Dopasowanie w czasie i wyjaśnialność modeli
 Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
 
 ![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
@@ -152,14 +157,16 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 <br>
 
 
-## 5. Wyjaśnialność modeli
-
 #### Permutation Feature Importance (PFI)
 Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
 
 ![PFI LightGBM](static/pfi_lightgbm.png)
 
-*Główny wniosek:* Bieżący bilans kaloryczny oraz 7-dniowa średnia krocząca bilansu determinują ponad 80% stabilności predykcji.
+>**Wniosek:**
+>Bieżący bilans kaloryczny oraz 7-dniowa średnia krocząca bilansu determinują ponad 80% stabilności predykcji.
+
+<br>
+
 
 #### SHAP (Shapley Additive Explanations)
 
