@@ -2,6 +2,7 @@
   <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
 
+<br>
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
 <br>
@@ -12,7 +13,7 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 
 <br>
 
-* **Globalny wpływ cech (Summary Plot)**: Podaż kalorii per kg masy ciała silnie przesuwa prognozę w górę (przyrost wagi), natomiast wydatek kroków i cardio redukuje wynik:  
+
   <p align="center">
     <img src="static/shap_summary.png" alt="SHAP Summary" width="700">
   </p>
@@ -20,7 +21,7 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 <br>
 
 
----
+
 
 ## 1. Problem biznesowy
 
@@ -32,7 +33,7 @@ W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na 
 **Rozwiązanie biznesowe:**  
 W ramach projektu opracowałam potok predykcyjny (`train_pipeline.py`), który radzi sobie z nieregularnymi pomiarami, wygładza wahania średnimi kroczącymi i prognozuje rzeczywisty trend masy ciała. Wygenerowana prognoza trafia bezpośrednio do silnika aplikacji, który automatycznie dopasowuje cel sylwetkowy użytkownika (**redukcja / masa / utrzymanie**) oraz odpowiedni plan treningowy.
 
----
+<br>
 
 ## 2. Schemat przepływu danych (Pipeline Workflow)
 
@@ -55,7 +56,10 @@ Analiza wyjaśnialności modeli (PFI oraz SHAP)
        ↓
 Eksport wag produkcyjnych (.pkl) dla API backendu
 
+
 ```
+<br>
+
 
 ## 3. Dane i przygotowanie zbioru
 
@@ -95,7 +99,7 @@ Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników m
 1. **Podział profili (80/20) i dane empiryczne:** 80% profili użytkowników trafiło do zbioru treningowego, a 20% stanowi całkowicie odizolowany zbiór testowy. Zagwarantowano obecność profili osób rzeczywistych (`user_id 1-5`) w obu częściach, zapobiegając przeuczeniu modelu wyłącznie na syntetycznych wzorcach.
 2. **GroupKFold Cross-Validation:** Walidacja krzyżowa (3 foldy) grupowana ściśle po `user_id`. Modele były sprawdzane wyłącznie na całych profilach użytkowników, których nie widziały w trakcie treningu.
 
-
+<br>
 ---
 
 ## 4. Wyniki analizy i modele
@@ -127,6 +131,7 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?)**
 Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
 
+<br>
 
 ### Analiza scenariuszowa What-If
 
@@ -135,6 +140,9 @@ Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje 
 * **Weryfikacja kumulacji błędów:** Sprawdzono, czy w iteracyjnym prognozowaniu dzień po dniu modele nie generują nierealistycznych odchyleń metabolicznych.
 * **Wartość:** Mechanizm ten stanowi podstawę modułu symulatora w aplikacji FitForm, umożliwiając użytkownikowi podejrzenie prognozowanego efektu sylwetkowego przed podjęciem planu treningowego.
 
+<br>
+
+
 ### Dopasowanie w czasie
 Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
 
@@ -142,6 +150,9 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 
 *Komentarz do wykresu:* Wykres przedstawia 40-dniową symulację krokową. Podczas gdy modele drzewiaste (LightGBM, XGBoost) bezbłędnie utrzymały zadany trend metaboliczny bez efektu dryfu, silnie regularyzowane modele liniowe (Elastic Net) wykazały niedouczenie (underfitting), tłumiąc dobową dynamikę zmian.
 ---
+
+<br>
+
 
 ### 5. Wyjaśnialność modeli
 
