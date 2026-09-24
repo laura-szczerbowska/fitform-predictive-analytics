@@ -251,9 +251,9 @@ fitform-predictive-analytics/
 ```
 <br>
 
-## 8. Jak uruchomić projekt
+## 8. Getting Started
 
-Sklonuj repozytorium:
+Clone the repository:
 
 ```bash
 git clone https://github.com/laura-szczerbowska/fitform-predictive-analytics.git
