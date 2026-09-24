@@ -27,7 +27,7 @@ W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na 
 
   
 **Rozwiązanie biznesowe:**  
-W ramach projektu opracowałam potok predykcyjny (`train_pipeline.py`), który radzi sobie z nieregularnymi pomiarami, wygładza wahania średnimi kroczącymi i prognozuje rzeczywisty trend masy ciała. Wygenerowana prognoza trafia bezpośrednio do silnika aplikacji, który automatycznie pokazuje predykcje zmiany wagi w wybranym okresie, dopasowuje cel sylwetkowy użytkownika (**redukcja / masa / utrzymanie**) oraz odpowiedni plan treningowy.
+W ramach projektu opracowałam potok predykcyjny (`train_pipeline.py`), który radzi sobie z nieregularnymi pomiarami, wygładza wahania średnimi kroczącymi i prognozuje rzeczywisty trend masy ciała. Wygenerowana prognoza trafia bezpośrednio do silnika aplikacji, który przy użyciu wizualizacji przedstawia predykcje zmiany wagi w wybranym okresie, dopasowuje cel sylwetkowy użytkownika (**redukcja / masa / utrzymanie**) oraz odpowiedni plan treningowy.
 
 <br>
 
@@ -46,11 +46,11 @@ Podział danych i walidacja GroupKFold (ochrona przed wyciekiem danych)
        ↓
 Trening i benchmarking 10 modeli regresyjnych + Ensemble
        ↓
-Symulacja trajektorii w czasie (analiza scenariuszowa What-If)
+Symulacja scenariuszowa i test stabilności
        ↓
-Analiza wyjaśnialności modeli (PFI oraz SHAP)
+Analiza wyjaśnialności modeli (PFI, SHAP, wykres dopasowania w czasie)
        ↓
-Eksport wag produkcyjnych (.pkl) dla API backendu
+Eksport wytrenowanego modelu produkcyjnego (.pkl) dla API backendu
 
 
 ```
@@ -59,7 +59,7 @@ Eksport wag produkcyjnych (.pkl) dla API backendu
 
 ## 3. Dane i przygotowanie zbioru
 
-Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
+Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
 
 
 #### Zbiór łączy dwa źródła danych:
@@ -81,10 +81,9 @@ Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmuj�
 $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{dni między ważeniami}}$$
 
 
-* **Wygładzanie skoków wagi:** Wyliczenie średnich z ostatnich 7 dni dla bilansu kalorycznego (`bilans_kcal_ma7`), dzięki czemu model widzi ogólny kierunek zmian, a nie przypadkowe wahania z pojedynczego dnia.
+* **Wygładzanie skoków wagi:** Wyliczono średnie z ostatnich 7 dni dla bilansu kalorycznego (`bilans_kcal_ma7`), dzięki czemu model widzi ogólny kierunek zmian, a nie przypadkowe wahania z pojedynczego dnia.
 * **Wskaźniki w przeliczeniu na masę ciała:** Zamiast samych kalorii i gramów białka, dodano wartości w przeliczeniu na 1 kg masy ciała (`kcal_na_kg`, `bialko_na_kg`), co pozwala porównywać osoby o różnej wadze.
-* **Wpływ weekendów:** Dodanie znacznika weekendu (sobota-niedziela), aby uwzględnić częstsze odstępstwa od diety i zmiany w aktywności w dni wolne.
-* **Usuwanie błędnych wpisów:** Obcięcie percentyli 5% i 95% dobowej zmiany wagi w celu odrzucenia ewidentnych pomyłek przy manualnym wpisywaniu pomiarów.
+* **Wpływ weekendów:** Dodano znacznika weekendowego (sobota-niedziela), aby uwzględnić częstsze odstępstwa od diety i zmiany w aktywności w dni wolne.
 
 <br>
 
@@ -132,42 +131,51 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 ### Wnioski z tabeli
 
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
-* **Ograniczenia modeli liniowych:** Prosta regresja liniowa osiągnęła $R^2 ≈ 0.77$. Choć oddaje ogólny trend, nie radzi sobie z dobowymi wahaniami.
+* **Ograniczenia modeli liniowych:** Klasyczna regresja liniowa i Ridge osiągnęły $R^2 ≈ 0.77$. Choć oddają ogólny trend, nie radzą sobie z dobowymi wahaniami i nieliniowymi progami metabolicznymi.
+* **Błędny wybór SVM i Elastic Net** Modele te zbyt mocno wygładziły dane ($R^2 <= 0.31$). W efekcie przestały reagować na codzienne zmiany diety i aktywności, przez co ich prognozy były bezużyteczne w symulatorze.
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?):**  
     Pomimo że różnice w wynikach były marginalne, LightGBM został wybrany ze względu na **prostotę i efektywność**: w przeciwieństwie do Ensemble nie wymaga łączenia trzech różnych modeli naraz, a od XGBoosta jest lżejszy i stabilniejszy w utrzymaniu bez utraty precyzji.
 
 <br>
 
-## Analiza scenariuszowa What-If
+## Symulacja scenariuszowa
 
-Weryfikacja dobowych predykcji na osi czasu względem danych empirycznych dla profilu o najwyższej zmienności wagi:
-Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje stabilność modeli w 30-dniowym horyzoncie czasowym przy zadanym scenariuszu behawioralnym (np. waga początkowa 85 kg, deficyt kaloryczny, 14 000 kroków, trening siłowy):
+Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje stabilność modeli w 30-dniowym horyzoncie czasowym przy zadanym scenariuszu (np. waga początkowa 85 kg, deficyt kaloryczny, 14 000 kroków, trening siłowy):
 * **Weryfikacja kumulacji błędów:** Sprawdzono, czy w iteracyjnym prognozowaniu dzień po dniu modele nie generują nierealistycznych odchyleń metabolicznych.
 * **Wartość:** Mechanizm ten stanowi podstawę modułu symulatora w aplikacji FitForm, umożliwiając użytkownikowi podejrzenie prognozowanego efektu sylwetkowego przed podjęciem planu treningowego.
 
 <br>
 
 
-## 5. Wyjaśnialność modeli
+## 5. Wyjaśnialność modeli i wizualizacja wpływu cech
 
 
 #### PFI (Permutation Feature Importance )
 
 Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
-<br>
+
+
 ![PFI LightGBM](static/pfi_lightgbm.png)
+
+
 
 >**Wniosek:**
 >Bieżący bilans kaloryczny oraz 7-dniowa średnia krocząca bilansu determinują ponad 80% stabilności predykcji.
+
 
 <br>
 
 
 #### SHAP (Shapley Additive Explanations)
 
+
 * **Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
 
+
+
     ![SHAP Waterfall](static/shap_waterfall.png)
+
+
 
 > **Wniosek i powiązanie z SHAP Summary Plot:**
   > Dekompozycja pojedynczego dnia idealnie potwierdza reguły zaobserwowane w wyżej przedstawionym Summary Plot:
@@ -260,6 +268,6 @@ Prognozy modelu wspierają silnik decyzyjny aplikacji FitForm w:
 * Wczesnym wykrywaniu stagnacji metabolicznej i spadku motywacji użytkownika
 * Dostarczaniu użytkownikom przejrzystych wyjaśnień (XAI), które czynniki najbardziej wpływają na ich wagę
 
-Projekt prezentuje kompletny proces Data Science / Analytics: od ekstrakcji danych z relacyjnej bazy PostgreSQL, przez zaawansowany preprocessing i inżynierię cech szeregów czasowych, benchmarking 10 architektur modeli z rygorystyczną walidacją `GroupKFold`, aż po wyjaśnialność biznesową (SHAP, PFI).
+Projekt prezentuje kompletny proces Data Science / Analytics: od ekstrakcji danych z relacyjnej bazy PostgreSQL, przez zaawansowany preprocessing i inżynierię cech szeregów czasowych, benchmarking 10 architektur modeli z walidacją `GroupKFold`, aż po wyjaśnialność biznesową (SHAP, PFI).
 
 ---
