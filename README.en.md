@@ -98,6 +98,8 @@ The models received 11 variables spanning three core operational domains:
 * **Activity & lifestyle:** resistance training (0/1), cardio duration (min), step count, and weekend flag (0/1).
 
 
+<br>
+
 
 ### 4) Validation Methodology (Zero Data Leakage)
 Random splitting (`train_test_split`) on user time-series data can lead to data leakage, as the model memorizes the specific characteristics of individual users. A two-tier safeguard was applied:
@@ -131,6 +133,9 @@ Ten diverse machine learning algorithms were benchmarked - ranging from linear m
 | **Elastic Net** | 0.0273 | 0.0341 | -0.0450 | 0.0252 | 0.0326 | -0.0041 |
 
 *[Full metric export: static/models_comparison.csv](static/models_comparison.csv)*
+
+
+<br>
 
 
 > **Methodological Note on Metrics ($R^2 ≈0.99$, $\text{MAE} ≈ 0.002\text{ kg}$):**  
