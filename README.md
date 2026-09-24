@@ -256,7 +256,7 @@ fitform-predictive-analytics/
 Sklonuj repozytorium:
 
 ```bash
-git clone https://github.com/twoja-nazwa-uzytkownika/fitform-predictive-analytics.git
+git clone https://github.com/laura-szczerbowska/fitform-predictive-analytics.git
 ```
 Zainstaluj wymagane pakiety:
 ```bash
