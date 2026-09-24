@@ -16,7 +16,7 @@ In fitness applications, standard body weight forecasting based solely on static
 * **Irregular logging behavior:** Users weigh themselves intermittently (every 2-4 days), while dietary intakes and step counts are logged daily.
 * **Input errors and noise:** Extreme, erroneous manual entries distort classical learning algorithms.
 
-**Business Solution:**  
+**Solution:**  
 This project implements an end-to-end predictive pipeline (`train_pipeline.py`) capable of handling irregular intervals, smoothing noise via rolling statistics, and forecasting the underlying weight trajectory. The generated forecast feeds directly into the application engine, which visualizes weight trajectory predictions over a selected timeframe, adjusts the user's physique target (**cutting / bulking / maintenance**), and calibrates the recommended training routine.
 
 <br>
