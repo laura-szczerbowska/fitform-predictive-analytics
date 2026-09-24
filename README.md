@@ -72,7 +72,7 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 ### 2) Inżynieria cech (Feature Engineering)
 * **Kluczowy bilans energetyczny:** Podstawowa zmienna różnicowa definiująca dobowy deficyt lub nadwyżkę:
 
-$$\text{bilans\_kcal} = \text{spozyte\_kcal} - \text{spalone\_kcal}$$
+$$\text{bilans_kcal} = \text{spozyte\_kcal} - \text{spalone\_kcal}$$
 
 * **Wyrównanie nieregularnych interwałów:** Zmienna docelowa (y) to znormalizowana dobowa stopa zmiany wagi, uwzględniająca rzeczywisty odstęp czasu między pomiarami:
 
