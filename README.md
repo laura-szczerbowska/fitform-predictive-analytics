@@ -168,7 +168,7 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 #### SHAP (Shapley Additive Explanations)
 
 
-* **Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
+**Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
 
 
 
