@@ -22,7 +22,7 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 
 W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na bazie sztywnego deficytu kalorycznego (np. wzór Wishnofsky'ego) zawodzi w kontakcie z rzeczywistym użytkownikiem:
 * **Krótkoterminowe wahania wody:** Masa ciała z dnia na dzień potrafi zmienić się o 1-2 kg pod wpływem diety czy regeneracji po treningu, co nie odzwierciedla faktycznej utraty lub przyrostu tkanki tłuszczowej.
-* **Nieregularność logowania:** Użytkownicy ważą się co 2-4 dni, podczas gdy dane dietetyczne i kroki wprowadzają codziennie.
+* **Nieregularność logowania:** Użytkownicy ważą się nieregularnie (co 2-4 dni), podczas gdy dane dietetyczne i kroki wprowadzają codziennie.
 * **Błędy wprowadzania danych:** Skrajne, omyłkowe wpisy manualne zaburzają klasyczne algorytmy uczące.
 
   
