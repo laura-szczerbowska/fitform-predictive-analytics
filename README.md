@@ -79,7 +79,9 @@ Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmuj�
 ### 2) Inżynieria cech (Feature Engineering)
 * **Wyrównanie nieregularnych interwałów:** Zmienna docelowa (y) to znormalizowana dobowa stopa zmiany wagi, uwzględniająca rzeczywisty odstęp czasu między pomiarami:
 
+
 $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{dni między ważeniami}}$$
+
 
 * **Wygładzanie skoków wagi:** Wyliczenie średnich z ostatnich 7 dni dla bilansu kalorycznego (`bilans_kcal_ma7`), dzięki czemu model widzi ogólny kierunek zmian, a nie przypadkowe wahania z pojedynczego dnia.
 * **Wskaźniki w przeliczeniu na masę ciała:** Zamiast samych kalorii i gramów białka, dodano wartości w przeliczeniu na 1 kg masy ciała (`kcal_na_kg`, `bialko_na_kg`), co pozwala porównywać osoby o różnej wadze.
