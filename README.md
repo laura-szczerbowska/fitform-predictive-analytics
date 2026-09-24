@@ -118,7 +118,10 @@ Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników m
 
 ### Porównanie 10 modeli regresyjnych
 Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli liniowych, przez algorytmy oparte na sąsiedztwie (KNN) i maszynach wektorów nośnych (SVM), aż po metody boostingowe i dedykowany model Ensemble (`VotingRegressor`).
+
+
 <br>
+
 
 | Model | MAE mean CV [kg] | RMSE mean CV [kg] | R² mean CV | Test MAE [kg] | Test RMSE [kg] | Test R² |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -137,7 +140,7 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 *[Pełen zestawienie metryk: static/models_comparison.csv](static/models_comparison.csv)*
 
 
-> **Komentarz metodyczny do uzyskanych metryk ($R^2 ≈ 0.99$, MAE ≈ 0.002$ kg):**  
+> **Komentarz metodyczny do uzyskanych metryk ($R^2 ≈ 0.99$, $MAE ≈ 0.002$ kg):**  
 > Wyjątkowo wysokie dopasowanie modeli wynika z dominującego udziału danych syntetycznych (95%), generowanych biblioteką Faker w oparciu o reguły bilansu energetycznego. Dane empiryczne stanowiły 5% wolumenu, lecz zadbano o ich reprezentację w odizolowanym zbiorze testowym. Na zbiorze w pełni empirycznym metryki te będą naturalnie niższe. Model w obecnej formie doskonale nauczył się bazowych zależności fizjologicznych, stanowiąc stabilny silnik do symulacji scenariuszowych.
 
 <br>
