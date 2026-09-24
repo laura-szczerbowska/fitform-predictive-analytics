@@ -8,9 +8,11 @@
 Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzienne dzienniki aktywności i diety w wiarygodne prognozy zmian masy ciała. Projekt rozwiązuje problem nieregularnych wpisów i dobowych wahań wagi, dostarczając silnikowi rekomendacji aplikacji rzetelne wskaźniki decyzyjne oparte na benchmarkingu 10 modeli regresyjnych oraz analizie ważności cech.
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
+
 <br>
 
-  <p align="center">
+
+ <p align="center">
     <img src="static/shap_summary.png" alt="SHAP Summary" width="700">
   </p>
 
