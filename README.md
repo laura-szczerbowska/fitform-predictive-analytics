@@ -2,7 +2,7 @@
   <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
 
-# FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
+# FitForm: Dynamika zmian masy ciała w szeregach czasowych i silnik analityki predykcyjnej
 
 
 Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzienne dzienniki aktywności i diety w wiarygodne prognozy zmian masy ciała. Projekt rozwiązuje problem nieregularnych wpisów i dobowych wahań wagi, dostarczając silnikowi rekomendacji aplikacji rzetelne wskaźniki decyzyjne oparte na benchmarkingu 10 modeli regresyjnych oraz analizie ważności cech.
@@ -11,10 +11,11 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 
 <br>
 
-
- <p align="center">
-    <img src="static/shap_summary.png" alt="SHAP Summary" width="700">
-  </p>
+<p align="center">
+  <img src="static/shap_summary.png" alt="SHAP Summary Plot" width="700">
+  <br>
+  <sub>Globalna dekompozycja wpływu cech na dobową zmianę wagi (SHAP Summary Plot). Analiza w sekcji 5.</sub>
+</p>
 
 <br>
 
@@ -175,18 +176,23 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 
 #### SHAP (Shapley Additive Explanations)
 
+* **Globalny wpływ cech (Summary Plot - wykres na początku README):**
+Ujawnia hierarchię czynników determinujących zmiany wagi:
+  * **Dominacja średniej kroczącej:** Zgodnie z wykresem Summary, decydujący wpływ na spadek lub wzrost masy ciała ma **7-dniowy średni bilans** oraz **bieżący bilans kaloryczny**.
+  * **Kierunek wpływu:** Nadwyżka kaloryczna (czerwone punkty) silnie podnosi prognozowaną wagę, natomiast deficyt oraz wysoka liczba kroków (wartości niebieskie i przesunięcia w lewo) bezpośrednio stymulują spadek wagi.
 
-Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia – wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
+<br>
+
+* **Lokalna dekompozycja dnia (Waterfall Plot):**
+  Rozbicie pojedynczej decyzji predykcyjnej dla wybranego dnia - wyjaśnienie, które zachowania zaważyły na spadku lub wzroście wagi względem średniej bazy:
 
 <p align="center">
   <img src="static/shap_waterfall.png" alt="SHAP Waterfall" width="700">
 </p>
 
-> **Wniosek i powiązanie z SHAP Summary Plot:**  
-> Dekompozycja pojedynczego dnia potwierdza reguły zaobserwowane w ujęciu globalnym:
->
-> * **Dominacja średniej kroczącej:** Podobnie jak na wykresie globalnym, najważniejszym czynnikiem zmiany wagi jest 7-dniowy średni bilans oraz dobowy bilans kaloryczny.
-> * **Zastosowanie w FitForm:** Taka interpretacja pozwala aplikacji wygenerować dla użytkownika jasny komunikat w panelu dziennym: „Twój prognozowany spadek wagi o ~0.07 kg/dzień wynika w 90% ze stabilnego deficytu kalorycznego z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”.
+> **Interpretacja pojedynczej predykcji:**
+> * **Kluczowy wpływ deficytu:** Potwierdzając wnioski globalne, w tym konkretnym dniu to ujemny bilans kaloryczny z ostatnich 7 dni oraz bieżący deficyt dobowy zaważyły na spadku predykcji o blisko **0.05 kg/dzień**.
+> * **Wartość produktowa dla FitForm:** Taka dekompozycja pozwala aplikacji wygenerować dla użytkownika przejrzysty komunikat w panelu dziennym: *„Twój prognozowany spadek wagi wynika w przeważającej mierze z utrzymywanego deficytu z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
 
 <br>
 
