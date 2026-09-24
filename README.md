@@ -9,6 +9,8 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
 
+
+
 ## 1. Problem biznesowy
 
 W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na bazie sztywnego deficytu kalorycznego (np. wzór Wishnofsky'ego) zawodzi w kontakcie z rzeczywistym użytkownikiem:
