@@ -9,16 +9,6 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
 
-<br>
-
-<p align="center">
-  <img src="static/shap_summary.png" alt="SHAP Summary Plot" width="700">
-  <br>
-  <sub>Globalna dekompozycja wpływu cech na dobową zmianę wagi (SHAP Summary Plot). Analiza w sekcji 5.</sub>
-</p>
-
-<br>
-
 ## 1. Problem biznesowy
 
 W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na bazie sztywnego deficytu kalorycznego (np. wzór Wishnofsky'ego) zawodzi w kontakcie z rzeczywistym użytkownikiem:
@@ -79,6 +69,10 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 ---
 
 ### 2) Inżynieria cech (Feature Engineering)
+* **Kluczowy bilans energetyczny:** Podstawowa zmienna różnicowa definiująca dobowy deficyt lub nadwyżkę:
+
+$$\text{bilans\_kcal} = \text{spozyte\_kcal} - \text{spalone\_kcal}$$
+
 * **Wyrównanie nieregularnych interwałów:** Zmienna docelowa (y) to znormalizowana dobowa stopa zmiany wagi, uwzględniająca rzeczywisty odstęp czasu między pomiarami:
 
 
@@ -134,6 +128,10 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 
 *[Pełen zestawienie metryk: static/models_comparison.csv](static/models_comparison.csv)*
 
+
+> **Komentarz metodyczny do uzyskanych metryk ($R^2 ≈ 0.99$, MAE ≈ 0.002$ kg):**  
+> Wyjątkowo wysokie dopasowanie modeli wynika z dominującego udziału danych syntetycznych (95%), generowanych biblioteką Faker w oparciu o reguły bilansu energetycznego. Dane empiryczne stanowiły 5% wolumenu, lecz zadbano o ich reprezentację w odizolowanym zbiorze testowym. Na zbiorze w pełni empirycznym metryki te będą naturalnie niższe. Model w obecnej formie doskonale nauczył się bazowych zależności fizjologicznych, stanowiąc stabilny silnik do symulacji scenariuszowych.
+
 <br>
 
 ### Wnioski z tabeli
@@ -176,23 +174,29 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 
 #### SHAP (Shapley Additive Explanations)
 
-* **Globalny wpływ cech (Summary Plot - wykres na początku README):**
-Ujawnia hierarchię czynników determinujących zmiany wagi:
-  * **Dominacja średniej kroczącej:** Zgodnie z wykresem Summary, decydujący wpływ na spadek lub wzrost masy ciała ma **7-dniowy średni bilans** oraz **bieżący bilans kaloryczny**.
-  * **Kierunek wpływu:** Nadwyżka kaloryczna (czerwone punkty) silnie podnosi prognozowaną wagę, natomiast deficyt oraz wysoka liczba kroków (wartości niebieskie i przesunięcia w lewo) bezpośrednio stymulują spadek wagi.
+* **Globalny wpływ cech (Summary Plot):**  
+  Analiza wartości Shapleya pozwala zidentyfikować hierarchię czynników decyzyjnych modelu:
+
+<p align="center">
+  <img src="static/shap_summary.png" alt="Wpływ zmiennych na dobową zmianę wagi" width="700">
+</p>
+
+> **Kluczowe wnioski analityczne (Summary Plot):**
+> * **Dominacja bilansu kalorycznego:** Decydujący wpływ na spadek lub wzrost wagi ma 7-dniowy średni bilans oraz bieżący bilans dobowy. Nadwyżka kaloryczna (czerwone punkty po prawej) silnie zwiększa prognozę wagi.
+> * **Rola aktywności fizycznej:** Liczba kroków oraz czas cardio systematycznie stymulują spadek masy ciała (wartości niebieskie i przesunięcie w lewo), amortyzując dobowe nadwyżki energetyczne.
 
 <br>
 
-* **Lokalna dekompozycja dnia (Waterfall Plot):**
+* **Lokalna dekompozycja dnia (Waterfall Plot):**  
   Rozbicie pojedynczej decyzji predykcyjnej dla wybranego dnia - wyjaśnienie, które zachowania zaważyły na spadku lub wzroście wagi względem średniej bazy:
 
 <p align="center">
   <img src="static/shap_waterfall.png" alt="SHAP Waterfall" width="700">
 </p>
 
-> **Interpretacja pojedynczej predykcji:**
-> * **Kluczowy wpływ deficytu:** Potwierdzając wnioski globalne, w tym konkretnym dniu to ujemny bilans kaloryczny z ostatnich 7 dni oraz bieżący deficyt dobowy zaważyły na spadku predykcji o blisko **0.05 kg/dzień**.
-> * **Wartość produktowa dla FitForm:** Taka dekompozycja pozwala aplikacji wygenerować dla użytkownika przejrzysty komunikat w panelu dziennym: *„Twój prognozowany spadek wagi wynika w przeważającej mierze z utrzymywanego deficytu z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
+> **Interpretacja pojedynczej predykcji (Waterfall Plot):**
+> * **Kluczowy wpływ deficytu:** Potwierdzając wnioski globalne, w analizowanym dniu to ujemny bilans z ostatnich 7 dni oraz deficyt bieżący zaważyły na obniżeniu prognozy o blisko 0.05 kg/dzień.
+> * **Wartość produktowa dla FitForm:** Taka dekompozycja pozwala aplikacji wygenerować dla użytkownika przejrzysty komunikat w panelu dziennym: „Twój prognozowany spadek wagi wynika w przeważającej mierze z utrzymywanego deficytu z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”.
 
 <br>
 
