@@ -182,7 +182,7 @@ Direct degradation in model performance (increase in MAE error) after randomly p
 >   * *Spalone kalorie (kcal)* / *Spożyte kalorie (kcal)*: Calories burned (kcal) / Calories consumed (kcal)
 >   * *Białko / Kalorie / kg masy ciała*: Protein / Calories per kg of body weight
 >   * *Dzień weekendowy* / *Trening siłowy* / *Czas cardio (min)*: Weekend day / Resistance training / Cardio duration (min)
->   * *Spożycie białka (g)* → Protein intake (g)
+>   * *Spożycie białka (g)*: Protein intake (g)
 
 
 >**Conclusion:**
