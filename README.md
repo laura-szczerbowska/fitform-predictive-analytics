@@ -4,8 +4,6 @@
 
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
-<br>
-
 
 Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzienne dzienniki aktywności i diety w wiarygodne prognozy zmian masy ciała. Projekt rozwiązuje problem nieregularnych wpisów i dobowych wahań wagi, dostarczając silnikowi rekomendacji aplikacji rzetelne wskaźniki decyzyjne oparte na benchmarkingu 10 modeli regresyjnych oraz analizie ważności cech.
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
@@ -66,6 +64,7 @@ Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmuj�
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
 
+<br>
 
 ### 1) Czyszczenie i przygotowanie danych (Data Cleaning)
 * **Uzupełnienie brakujących ważeń:** Nieregularne ważenie obsłużono per użytkownik metodami (`ffill` oraz `bfill`), zapewniając ciągłość bazy pomiarowej do dalszych wyliczeń.
@@ -130,7 +129,6 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 
 ### Wnioski z tabeli
 
-
 * **Przewaga modeli gradientowych:** **LightGBM** oraz **Ensemble** bezbłędnie wychwytują nieliniowe interakcje między intensywnością treningu, liczbą kroków a deficytem kalorycznym ($R^2 ≈ 0.99$).
 * **Ograniczenia modeli liniowych:** Prosta regresja liniowa osiągnęła $R^2 ≈ 0.77$. Choć oddaje ogólny trend, nie radzi sobie z dobowymi wahaniami.
 * **Decyzja wdrożeniowa (Dlaczego LightGBM?):**  
@@ -150,19 +148,8 @@ Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje 
 
 ## 5. Wyjaśnialność modeli
 
-#### Dopasowanie w czasie
 
-Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
-<br>
-
-![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
-
-*Komentarz do wykresu:* Wykres przedstawia 40-dniową symulację krokową. Podczas gdy modele drzewiaste (LightGBM, XGBoost) bezbłędnie utrzymały zadany trend metaboliczny bez efektu dryfu, silnie regularyzowane modele liniowe (Elastic Net) wykazały niedouczenie (underfitting), tłumiąc dobową dynamikę zmian.
-
-<br>
-
-
-#### Permutation Feature Importance (PFI)
+#### PFI (Permutation Feature Importance )
 
 Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu wartości danej cechy:
 <br>
@@ -184,6 +171,17 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
   > Dekompozycja pojedynczego dnia idealnie potwierdza reguły zaobserwowane w wyżej przedstawionym Summary Plot:
   **Dominacja średniej kroczącej:** Podobnie jak na wykresie globalnym, najważniejszym motorem zmiany wagi jest **7-dniowy średni bilans** oraz **dobowy bilans kaloryczny**.
   **Zastosowanie w FitForm:** Taka interpretacja pozwala aplikacji wygenerować dla użytkownika jasny komunikat w panelu dziennym: *„Twój prognozowany spadek wagi o ~0.07 kg/dzień wynika w 90% ze stabilnego deficytu kalorycznego z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
+
+<br>
+
+#### Dopasowanie w czasie
+
+Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla profilu o największej dynamice zmian:
+<br>
+
+![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
+
+> **Komentarz do wykresu:** Wykres przedstawia 40-dniową symulację krokową. Podczas gdy modele drzewiaste (LightGBM, XGBoost) bezbłędnie utrzymały zadany trend metaboliczny bez efektu dryfu, silnie regularyzowane modele liniowe (Elastic Net) wykazały niedouczenie (underfitting), tłumiąc dobową dynamikę zmian.
 
 <br>
 
@@ -251,7 +249,7 @@ Możliwe rozszerzenia modułu obejmują:
 
 ## 10. Kluczowe wnioski
 
-Wykorzystując **11 kluczowych wskaźników dobowych**, model **LightGBM** precyzyjnie prognozuje rzeczywisty trend masy ciała (**R^2 ≈ 0.99**, **MAE ≈ 0.002 kg/dzień**), skutecznie filtrując dobowy szum wywołany naturalnymi zmianami i nieregularnym ważeniem.
+Wykorzystując **11 kluczowych wskaźników dobowych**, model **LightGBM** precyzyjnie prognozuje rzeczywisty trend masy ciała (**$R^2 ≈ 0.99$**, **MAE ≈ 0.002 kg/dzień**), skutecznie filtrując dobowy szum wywołany naturalnymi zmianami i nieregularnym ważeniem.
 
 Prognozy modelu wspierają silnik decyzyjny aplikacji FitForm w:
 
