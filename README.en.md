@@ -1,9 +1,6 @@
 <div align="right">
   <a href="./README.md">Polski</a> | <strong>English</strong>
 </div>
-<div align="right">
-  <a href="./README.pl.md">Polski</a> | <strong>English</strong>
-</div>
 
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
