@@ -54,12 +54,12 @@ Eksport wytrenowanego modelu produkcyjnego (.pkl) dla API backendu
 Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
 
 
-### Pochodzenie danych
 
-| Źródło danych | Skala | Specyfika zbioru | Rola w projekcie |
-| :--- | :--- | :--- | :--- |
-| **Dane empiryczne** | 5 użytkowników (3 m-ce) | Nieregularne logowanie, błędy manualne, naturalny szum biologiczny | Test generalizacji na realnym zachowaniu |
-| **Dane syntetyczne** | Generator kohortowy (Faker) | Zróżnicowane profile (redukcja, masa, epizody chorobowe, skrajna aktywność) | Stabilizacja wag modelu i pokrycie scenariuszy brzegowych |
+#### Zbiór łączy dwa źródła danych:
+
+* **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
+
+* **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
   
 
 ---
