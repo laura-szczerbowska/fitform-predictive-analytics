@@ -71,6 +71,8 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 * **Usunięcie błędów i pomyłek:** Jeśli w danych pojawiło się zero (np. brak spalonych kalorii powodujący błąd dzielenia), zamieniono je na puste pole zamiast błędu programu. Dodatkowo odrzucono skrajne 5% największych spadków i wzrostów wagi (percentyle 5% i 95%), eliminując ewidentne pomyłki manualne.
 
 
+<br>
+
 
 ### 2) Inżynieria cech (Feature Engineering)
 * **Kluczowy bilans energetyczny:** Podstawowa zmienna różnicowa definiująca dobowy deficyt lub nadwyżkę:
