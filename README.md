@@ -1,6 +1,7 @@
 <div align="right">
   <strong>Polski</strong> | <a href="./README.en.md">English</a>
 </div>
+
 # FitForm: Time-Series Weight Dynamics & Predictive Analytics Engine
 
 <br>
@@ -27,7 +28,7 @@ W aplikacjach fitnessowych standardowe prognozowanie masy ciała wyłącznie na 
 * **Krótkoterminowe wahania wody:** Masa ciała z dnia na dzień potrafi zmienić się o 1-2 kg pod wpływem diety czy regeneracji po treningu, co nie odzwierciedla faktycznej utraty lub przyrostu tkanki tłuszczowej.
 * **Nieregularność logowania:** Użytkownicy ważą się co 2-4 dni, podczas gdy dane dietetyczne i kroki wprowadzają codziennie.
 * **Błędy wprowadzania danych:** Skrajne, omyłkowe wpisy manualne zaburzają klasyczne algorytmy uczące.
-
+<br>
 **Rozwiązanie biznesowe:**  
 W ramach projektu opracowałam potok predykcyjny (`train_pipeline.py`), który radzi sobie z nieregularnymi pomiarami, wygładza wahania średnimi kroczącymi i prognozuje rzeczywisty trend masy ciała. Wygenerowana prognoza trafia bezpośrednio do silnika aplikacji, który automatycznie dopasowuje cel sylwetkowy użytkownika (**redukcja / masa / utrzymanie**) oraz odpowiedni plan treningowy.
 
