@@ -61,7 +61,6 @@ Eksport wag produkcyjnych (.pkl) dla API backendu
 
 Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
 
-<br>
 
 #### Zbiór łączy dwa źródła danych:
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
