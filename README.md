@@ -11,16 +11,12 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
 <br>
-<br>
 
   <p align="center">
     <img src="static/shap_summary.png" alt="SHAP Summary" width="700">
   </p>
 
 <br>
-
-
-
 
 ## 1. Problem biznesowy
 
@@ -65,6 +61,8 @@ Eksport wag produkcyjnych (.pkl) dla API backendu
 ## 3. Dane i przygotowanie zbioru
 
 Dane pochodzą z relacyjnej bazy PostgreSQL (zasilanej procesami ETL) i obejmują dobowe wpisy makroskładników, bilansu kalorycznego, liczby kroków oraz aktywności treningowych.
+
+<br>
 
 #### Zbiór łączy dwa źródła danych:
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
