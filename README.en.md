@@ -170,14 +170,14 @@ A step-by-step simulation function (`symulacja_wagi`) was implemented to test mo
 Direct degradation in model performance (increase in MAE error) after randomly permuting the values of a given feature:
 
 
-![PFI LightGBM](static/pfi_lightgbm.png)[cite: 2]
+![PFI LightGBM](static/pfi_lightgbm.png)
 
 
 > **Plot Translation Guide:**
 > * **X-axis (`Wzrost błędu dobowej zmiany wagi (MAE [kg])`):** Increase in daily weight delta error (MAE [kg])
 > * **Y-axis Feature Translations:**
->   * *Średni bilans kcal (7 dni)*: 7-day average caloric balance[cite: 2]
->   * *Dobowy bilans kaloryczny*: Daily caloric balance[cite: 2]
+>   * *Średni bilans kcal (7 dni)*: 7-day average caloric balance
+>   * *Dobowy bilans kaloryczny*: Daily caloric balance
 >   * *Liczba kroków*: Step count
 >   * *Spalone kalorie (kcal)* / *Spożyte kalorie (kcal)*: Calories burned (kcal) / Calories consumed (kcal)
 >   * *Białko / Kalorie / kg masy ciała*: Protein / Calories per kg of body weight
