@@ -9,6 +9,7 @@ Moduł analityczno-predykcyjny dla platformy FitForm, przekształcający codzien
 > *Projekt zrealizowany w ramach zespołowego projektu akademickiego Project-Based Learning (PjBL).*
 
 
+<br>
 
 
 ## 1. Problem biznesowy
