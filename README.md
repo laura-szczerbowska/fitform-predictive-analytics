@@ -65,8 +65,7 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 #### Zbiór łączy dwa źródła danych:
 * **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
-
-<br>
+  
 
 ### 1) Czyszczenie i przygotowanie danych (Data Cleaning)
 * **Uzupełnienie brakujących ważeń:** Nieregularne ważenie obsłużono per użytkownik metodami (`ffill` oraz `bfill`), zapewniając ciągłość bazy pomiarowej do dalszych wyliczeń.
