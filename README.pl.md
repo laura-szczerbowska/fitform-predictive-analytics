@@ -1,5 +1,5 @@
 <div align="right">
-  <strong>Polski</strong> | <a href="./README.en.md">English</a>
+  <strong>Polski</strong> | <a href="./README.md">English</a>
 </div>
 
 # FitForm: Dynamika zmian masy ciała w szeregach czasowych i silnik analityki predykcyjnej
