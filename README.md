@@ -67,10 +67,14 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
   
 
+
+
 ### 1) Czyszczenie i przygotowanie danych (Data Cleaning)
 * **Uzupełnienie brakujących ważeń:** Nieregularne ważenie obsłużono per użytkownik metodami (`ffill` oraz `bfill`), zapewniając ciągłość bazy pomiarowej do dalszych wyliczeń.
 * **Usunięcie niepełnych wpisów:** Ostatni zarejestrowany wpis każdego profilu został usunięty ze zbioru uczącego, ponieważ nie posiadał kolejnego pomiaru do wyliczenia dobowej zmiany wagi.
 * **Usunięcie błędów i pomyłek:** Jeśli w danych pojawiło się zero (np. brak spalonych kalorii powodujący błąd dzielenia), zamieniono je na puste pole zamiast błędu programu. Dodatkowo odrzucono skrajne 5% największych spadków i wzrostów wagi (percentyle 5% i 95%), eliminując ewidentne pomyłki manualne.
+
+
 
 
 ### 2) Inżynieria cech (Feature Engineering)
@@ -87,6 +91,8 @@ $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{d
 <br>
 
 
+
+
 ### 3) Zestaw zmiennych wejściowych (11 cech)
 Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
 * **Energia i bilans:** dobowy bilans kcal, 7-dniowa średnia bilansu kcal, spożyte kalorie, spalone kalorie, kalorie na kg masy ciała.
@@ -94,6 +100,8 @@ Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
 * **Aktywność i styl życia:** trening siłowy (0/1), czas cardio (min), liczba kroków oraz flaga weekendu (0/1).
 
 <br>
+
+
 
 ### 4) Metodyka podziału i walidacji (Zero Data Leakage)
 Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników może prowadzić do wycieku danych - model uczy się na pamięć cech konkretnej osoby. Zastosowano dwustopniowe zabezpieczenie:
@@ -168,18 +176,17 @@ Bezpośredni spadek jakości modelu (wzrost błędu MAE) po losowym zaburzeniu w
 #### SHAP (Shapley Additive Explanations)
 
 
-**Lokalna dekompozycja dnia (Waterfall Plot):** Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia - wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
+Rozbicie pojedynczej decyzji predykcyjnej dla konkretnego dnia – wyjaśnienie, które zachowania z danego dnia zaważyły na spadku lub wzroście wagi względem średniej bazy:
 
+<p align="center">
+  <img src="static/shap_waterfall.png" alt="SHAP Waterfall" width="700">
+</p>
 
-
-    ![SHAP Waterfall](static/shap_waterfall.png)
-
-
-
-> **Wniosek i powiązanie z SHAP Summary Plot:**
-  > Dekompozycja pojedynczego dnia idealnie potwierdza reguły zaobserwowane w wyżej przedstawionym Summary Plot:
-  **Dominacja średniej kroczącej:** Podobnie jak na wykresie globalnym, najważniejszym motorem zmiany wagi jest **7-dniowy średni bilans** oraz **dobowy bilans kaloryczny**.
-  **Zastosowanie w FitForm:** Taka interpretacja pozwala aplikacji wygenerować dla użytkownika jasny komunikat w panelu dziennym: *„Twój prognozowany spadek wagi o ~0.07 kg/dzień wynika w 90% ze stabilnego deficytu kalorycznego z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
+> **Wniosek i powiązanie z SHAP Summary Plot:**  
+> Dekompozycja pojedynczego dnia potwierdza reguły zaobserwowane w ujęciu globalnym:
+>
+> * **Dominacja średniej kroczącej:** Podobnie jak na wykresie globalnym, najważniejszym czynnikiem zmiany wagi jest **7-dniowy średni bilans** oraz **dobowy bilans kaloryczny**.
+> * **Zastosowanie w FitForm:** Taka interpretacja pozwala aplikacji wygenerować dla użytkownika jasny komunikat w panelu dziennym: *„Twój prognozowany spadek wagi o ~0.07 kg/dzień wynika w 90% ze stabilnego deficytu kalorycznego z ostatnich 7 dni, a nie tylko z dzisiejszego treningu”*.
 
 <br>
 
