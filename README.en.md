@@ -164,92 +164,85 @@ A step-by-step simulation function (`symulacja_wagi`) was implemented to test mo
 
 ## 5. Model Explainability & Feature Impact Visualization
 
+
 #### PFI (Permutation Feature Importance)
 
 Direct degradation in model performance (increase in MAE error) after randomly permuting the values of a given feature:
 
-![PFI LightGBM](static/pfi_lightgbm.png)
 
-> **Plot Reading Guide & Axis Definitions:**
-> * **X-axis (`Wzrost błędu dobowej zmiany wagi (MAE [kg])`):** Mean Absolute Error increase in kg/day when the feature values are shuffled. A higher delta indicates greater feature indispensability.
-> * **Y-axis Feature Translation:**
->   * *Średni bilans kcal (7 dni)* → 7-day rolling average caloric balance
->   * *Dobowy bilans kaloryczny* → Daily caloric balance
->   * *Liczba kroków* → Daily step count
->   * *Spalone kalorie (kcal)* / *Spożyte kalorie (kcal)* → Calories burned (TDEE) / Calories consumed
->   * *Białko / Kalorie / kg masy ciała* → Protein / Calories per kg of body weight
->   * *Dzień weekendowy* / *Trening siłowy* / *Czas cardio* → Weekend flag / Resistance training / Cardio duration
+![PFI LightGBM](static/pfi_lightgbm.png)[cite: 2]
 
->**Key Finding:**
+
+> **Plot Translation Guide:**
+> * **X-axis (`Wzrost błędu dobowej zmiany wagi (MAE [kg])`):** Increase in daily weight delta error (MAE [kg])[cite: 2].
+> * **Y-axis Feature Translations:**
+>   * *Średni bilans kcal (7 dni)* → 7-day average caloric balance[cite: 2]
+>   * *Dobowy bilans kaloryczny* → Daily caloric balance[cite: 2]
+>   * *Liczba kroków* → Step count[cite: 2]
+>   * *Spalone kalorie (kcal)* / *Spożyte kalorie (kcal)* → Calories burned (kcal) / Calories consumed (kcal)[cite: 2]
+>   * *Białko / Kalorie / kg masy ciała* → Protein / Calories per kg of body weight[cite: 2]
+>   * *Dzień weekendowy* / *Trening siłowy* / *Czas cardio (min)* → Weekend day / Resistance training / Cardio duration (min)[cite: 2]
+>   * *Spożycie białka (g)* → Protein intake (g)[cite: 2]
+
+
+>**Conclusion:**
 >The current caloric balance and the 7-day rolling average balance drive over 80% of prediction stability.
 
+
 <br>
+
 
 #### SHAP (Shapley Additive Explanations)
 
 * **Global Feature Impact (Summary Plot):**  
-  Shapley value distribution reveals the directional impact of individual features across all training instances:
+  Shapley value analysis allows identifying the hierarchy of the model's decision factors:
 
 <p align="center">
   <img src="static/shap_summary.png" alt="Feature Impact on Daily Weight Change" width="700">
 </p>
 
-> **Plot Reading Guide:**
-> * **Chart Title (`Wpływ zmiennych na dobową zmianę wagi`):** Feature impact on daily weight change.
-> * **X-axis (`SHAP value (impact on model output)`):** Contribution to the predicted weight delta (kg/day). Values $> 0$ push predictions toward weight gain; values $< 0$ push toward weight loss.
-> * **Color Bar (`Feature value`):** Red indicates high numerical values of a feature, blue represents low values.
->
+> **Plot Translation Guide:**
+> * **Title (`Wpływ zmiennych na dobową zmianę wagi`):** Feature impact on daily weight change[cite: 3].
+> * **X-axis (`SHAP value (impact on model output)`):** Impact on model output (daily weight change in kg/day)[cite: 3].
+> * **Color Bar (`Feature value`):** Red = High feature value, Blue = Low feature value[cite: 3].
+
 > **Key Analytical Takeaways (Summary Plot):**
-> * **Dominance of Caloric Balance:** High 7-day average balance and high daily balance (red points) shift predictions rightward (accelerating weight gain), whereas deficits (blue points) drive negative daily weight changes.
-> * **Role of Physical Activity:** Elevated step counts and cardio sessions (red/purple points) drive leftward shifts, directly offsetting caloric surplus.
+> * **Dominance of Caloric Balance:** The 7-day rolling average balance and current daily balance exert the strongest influence on weight loss or gain[cite: 3]. Caloric surplus (red points on the right) significantly increases the weight forecast[cite: 3].
+> * **Role of Physical Activity:** Step count and cardio duration consistently stimulate weight loss (blue values and shift to the left), mitigating daily energy surpluses[cite: 3].
 
 <br>
 
 * **Local Daily Decomposition (Waterfall Plot):**  
-  Single-day prediction deconstruction showing how specific daily habits shift the baseline expected prediction $E[f(X)]$ to the final forecast $f(x)$:
+  Deconstruction of an individual prediction for a selected day — explaining which daily behaviors drove the weight decrease or increase relative to the baseline value:
 
 <p align="center">
   <img src="static/shap_waterfall.png" alt="SHAP Waterfall" width="700">
 </p>
 
-> **Plot Reading Guide & Numerical Breakdown:**
-> * **Chart Title (`Lokalna interpretacja pojedynczej predykcji`):** Local interpretation of an individual prediction.
-> * **Base Value ($E[f(X)] = -0.007$ kg/day):** Expected mean baseline prediction across the dataset.
-> * **Final Prediction ($f(x) = -0.067$ kg/day):** Model's projected weight loss rate for this specific day.
-> * **Feature Contributions (Arrows):**
->   * `Średni bilans kcal (7 dni) = -550 kcal` → contributes **-0.04 kg/day** (blue arrow)
->   * `Dobowy bilans kaloryczny = -584 kcal` → contributes **-0.02 kg/day** (blue arrow)
->   * Combined physical activity (`14,283 steps`, `20 min cardio`, `2918 kcal burned`) sustains the trajectory.
->
-> **Product Value for FitForm:** This decomposition powers dynamic user insights: *"Your projected weight loss rate (-0.07 kg/day) is primarily driven by your consistent 7-day deficit (-550 kcal/day), rather than today's training alone."*
+> **Plot Translation Guide:**
+> * **Title (`Lokalna interpretacja pojedynczej predykcji`):** Local interpretation of a single prediction[cite: 4].
+> * **Baseline:** $E[f(X)] = -0.007$ kg/day (expected average model prediction)[cite: 4].
+> * **Final Output:** $f(x) = -0.067$ kg/day (predicted weight change for this day)[cite: 4].
+
+> **Single Prediction Interpretation (Waterfall Plot):**
+> * **Key Impact of Deficit:** Confirming the global findings, on this analyzed day, the negative 7-day rolling balance and current daily deficit were responsible for lowering the forecast by nearly 0.05 kg/day[cite: 4].
+> * **Product Value for FitForm:** This decomposition allows the application to deliver clear daily dashboard feedback: "Your projected weight loss is predominantly driven by your sustained 7-day deficit, rather than today's workout alone."
 
 <br>
 
 #### Timeline Fit
 
 Verification of daily model predictions against ground truth time-series data for the profile displaying the highest change dynamics:
-
 <br>
 
-![Model Predictions vs Ground Truth on Timeline](static/models_timeline_comparison.png)
+![Model Predictions vs Ground Truth on Timeline](static/models_timeline_comparison.png)[cite: 5]
 
-> **Plot Reading Guide:**
-> * **Chart Title (`Analiza porównawcza modeli`):** Comparative model performance analysis over a 40-day horizon.
-> * **Axes:** X-axis = `Dni` (Days, 0–40); Y-axis = `Masa ciała (kg)` (Body weight in kg, tracking decline from 88.7 kg to ~96.1 kg).
-> * **Legend Guide:** `WARTOŚĆ RZECZYWISTA` = Ground truth trajectory (black solid line with markers).
->
-> **Plot Commentary:** The chart illustrates a 40-day iterative forward simula
+> **Plot Translation Guide:**
+> * **Title (`Analiza porównawcza modeli`):** Comparative model analysis[cite: 5].
+> * **Axes:** X-axis = `Dni` (Days, 0–40), Y-axis = `Masa ciała (kg)` (Body weight in kg)[cite: 5].
+> * **Legend:** `WARTOŚĆ RZECZYWISTA` = Ground truth actual value (black line with points)[cite: 5].
 
-#### Timeline Fit
-
-Verification of daily model predictions against ground truth time-series data for the profile displaying the highest change dynamics:
-<br>
-
-![Model Predictions vs Ground Truth on Timeline](static/models_timeline_comparison.png)
-
-> **Plot Commentary:** The chart illustrates a 40-day iterative forward simulation. Tree-based models (LightGBM, XGBoost) accurately tracked the target metabolic trend without drift, whereas heavily regularized linear models (Elastic Net) exhibited underfitting, suppressing daily change dynamics.
-
-<br>
+> **Plot Commentary:** The chart illustrates a 40-day iterative forward simulation[cite: 5]. While tree-based models (LightGBM, XGBoost) accurately tracked the target metabolic trend without drift, heavily regularized linear models (Elastic Net) exhibited underfitting, suppressing daily change dynamics[cite: 5].
 
 ## 6. Tech Stack
 
