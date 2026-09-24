@@ -45,8 +45,6 @@ Symulacja scenariuszowa i test stabilności
 Analiza wyjaśnialności modeli (PFI, SHAP, wykres dopasowania w czasie)
        ↓
 Eksport wytrenowanego modelu produkcyjnego (.pkl) dla API backendu
-
-
 ```
 <br>
 
