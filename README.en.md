@@ -174,15 +174,15 @@ Direct degradation in model performance (increase in MAE error) after randomly p
 
 
 > **Plot Translation Guide:**
-> * **X-axis (`Wzrost błędu dobowej zmiany wagi (MAE [kg])`):** Increase in daily weight delta error (MAE [kg])[cite: 2].
+> * **X-axis (`Wzrost błędu dobowej zmiany wagi (MAE [kg])`):** Increase in daily weight delta error (MAE [kg])
 > * **Y-axis Feature Translations:**
->   * *Średni bilans kcal (7 dni)* → 7-day average caloric balance[cite: 2]
->   * *Dobowy bilans kaloryczny* → Daily caloric balance[cite: 2]
->   * *Liczba kroków* → Step count[cite: 2]
->   * *Spalone kalorie (kcal)* / *Spożyte kalorie (kcal)* → Calories burned (kcal) / Calories consumed (kcal)[cite: 2]
->   * *Białko / Kalorie / kg masy ciała* → Protein / Calories per kg of body weight[cite: 2]
->   * *Dzień weekendowy* / *Trening siłowy* / *Czas cardio (min)* → Weekend day / Resistance training / Cardio duration (min)[cite: 2]
->   * *Spożycie białka (g)* → Protein intake (g)[cite: 2]
+>   * *Średni bilans kcal (7 dni)*: 7-day average caloric balance[cite: 2]
+>   * *Dobowy bilans kaloryczny*: Daily caloric balance[cite: 2]
+>   * *Liczba kroków*: Step count
+>   * *Spalone kalorie (kcal)* / *Spożyte kalorie (kcal)*: Calories burned (kcal) / Calories consumed (kcal)
+>   * *Białko / Kalorie / kg masy ciała*: Protein / Calories per kg of body weight
+>   * *Dzień weekendowy* / *Trening siłowy* / *Czas cardio (min)*: Weekend day / Resistance training / Cardio duration (min)
+>   * *Spożycie białka (g)* → Protein intake (g)
 
 
 >**Conclusion:**
@@ -202,30 +202,32 @@ Direct degradation in model performance (increase in MAE error) after randomly p
 </p>
 
 > **Plot Translation Guide:**
-> * **Title (`Wpływ zmiennych na dobową zmianę wagi`):** Feature impact on daily weight change[cite: 3].
-> * **X-axis (`SHAP value (impact on model output)`):** Impact on model output (daily weight change in kg/day)[cite: 3].
-> * **Color Bar (`Feature value`):** Red = High feature value, Blue = Low feature value[cite: 3].
+> * **Title (`Wpływ zmiennych na dobową zmianę wagi`):** Feature impact on daily weight change.
+> * **X-axis (`SHAP value (impact on model output)`):** Impact on model output (daily weight change in kg/day).
+> * **Color Bar (`Feature value`):** Red = High feature value, Blue = Low feature value.
+
 
 > **Key Analytical Takeaways (Summary Plot):**
-> * **Dominance of Caloric Balance:** The 7-day rolling average balance and current daily balance exert the strongest influence on weight loss or gain[cite: 3]. Caloric surplus (red points on the right) significantly increases the weight forecast[cite: 3].
-> * **Role of Physical Activity:** Step count and cardio duration consistently stimulate weight loss (blue values and shift to the left), mitigating daily energy surpluses[cite: 3].
+> * **Dominance of Caloric Balance:** The 7-day rolling average balance and current daily balance exert the strongest influence on weight loss or gain. Caloric surplus (red points on the right) significantly increases the weight forecast.
+> * **Role of Physical Activity:** Step count and cardio duration consistently stimulate weight loss (blue values and shift to the left), mitigating daily energy surpluses.
 
 <br>
 
 * **Local Daily Decomposition (Waterfall Plot):**  
-  Deconstruction of an individual prediction for a selected day — explaining which daily behaviors drove the weight decrease or increase relative to the baseline value:
+  Deconstruction of an individual prediction for a selected day - explaining which daily behaviors drove the weight decrease or increase relative to the baseline value:
 
 <p align="center">
   <img src="static/shap_waterfall.png" alt="SHAP Waterfall" width="700">
 </p>
 
 > **Plot Translation Guide:**
-> * **Title (`Lokalna interpretacja pojedynczej predykcji`):** Local interpretation of a single prediction[cite: 4].
-> * **Baseline:** $E[f(X)] = -0.007$ kg/day (expected average model prediction)[cite: 4].
-> * **Final Output:** $f(x) = -0.067$ kg/day (predicted weight change for this day)[cite: 4].
+> * **Title (`Lokalna interpretacja pojedynczej predykcji`):** Local interpretation of a single prediction.
+> * **Baseline:** $E[f(X)] = -0.007$ kg/day (expected average model prediction).
+> * **Final Output:** $f(x) = -0.067$ kg/day (predicted weight change for this day).
+
 
 > **Single Prediction Interpretation (Waterfall Plot):**
-> * **Key Impact of Deficit:** Confirming the global findings, on this analyzed day, the negative 7-day rolling balance and current daily deficit were responsible for lowering the forecast by nearly 0.05 kg/day[cite: 4].
+> * **Key Impact of Deficit:** Confirming the global findings, on this analyzed day, the negative 7-day rolling balance and current daily deficit were responsible for lowering the forecast by nearly 0.05 kg/day.
 > * **Product Value for FitForm:** This decomposition allows the application to deliver clear daily dashboard feedback: "Your projected weight loss is predominantly driven by your sustained 7-day deficit, rather than today's workout alone."
 
 <br>
@@ -235,14 +237,19 @@ Direct degradation in model performance (increase in MAE error) after randomly p
 Verification of daily model predictions against ground truth time-series data for the profile displaying the highest change dynamics:
 <br>
 
-![Model Predictions vs Ground Truth on Timeline](static/models_timeline_comparison.png)[cite: 5]
+![Model Predictions vs Ground Truth on Timeline](static/models_timeline_comparison.png)
 
 > **Plot Translation Guide:**
-> * **Title (`Analiza porównawcza modeli`):** Comparative model analysis[cite: 5].
-> * **Axes:** X-axis = `Dni` (Days, 0–40), Y-axis = `Masa ciała (kg)` (Body weight in kg)[cite: 5].
-> * **Legend:** `WARTOŚĆ RZECZYWISTA` = Ground truth actual value (black line with points)[cite: 5].
+> * **Title (`Analiza porównawcza modeli`):** Comparative model analysis.
+> * **Axes:** X-axis = `Dni` (Days, 0-40), Y-axis = `Masa ciała (kg)` (Body weight in kg).
+> * **Legend:** `WARTOŚĆ RZECZYWISTA` = Ground truth actual value (black line with points).
 
-> **Plot Commentary:** The chart illustrates a 40-day iterative forward simulation[cite: 5]. While tree-based models (LightGBM, XGBoost) accurately tracked the target metabolic trend without drift, heavily regularized linear models (Elastic Net) exhibited underfitting, suppressing daily change dynamics[cite: 5].
+
+> **Plot Commentary:** The chart illustrates a 40-day iterative forward simulation. While tree-based models (LightGBM, XGBoost) accurately tracked the target metabolic trend without drift, heavily regularized linear models (Elastic Net) exhibited underfitting, suppressing daily change dynamics.
+
+
+<br>
+
 
 ## 6. Tech Stack
 
