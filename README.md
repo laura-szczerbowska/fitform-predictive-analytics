@@ -70,7 +70,6 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 * **Usunięcie błędów i pomyłek:** Jeśli w danych pojawiło się zero (np. brak spalonych kalorii powodujący błąd dzielenia), zamieniono je na puste pole zamiast błędu programu. Dodatkowo odrzucono skrajne 5% największych spadków i wzrostów wagi (percentyle 5% i 95%), eliminując ewidentne pomyłki manualne.
 
 
----
 
 ### 2) Inżynieria cech (Feature Engineering)
 * **Kluczowy bilans energetyczny:** Podstawowa zmienna różnicowa definiująca dobowy deficyt lub nadwyżkę:
@@ -91,7 +90,7 @@ $$\text{dobowa zmiana wagi [kg/dzień]} = \frac{\Delta \text{waga [kg]}}{\text{d
 
 <br>
 
----
+
 
 
 ### 3) Zestaw zmiennych wejściowych (11 cech)
@@ -102,7 +101,7 @@ Do modeli przekazano 11 zmiennych podzielonych na 3 kluczowe obszary:
 
 <br>
 
----
+
 
 ### 4) Metodyka podziału i walidacji (Zero Data Leakage)
 Losowy podział zbioru (`train_test_split`) na danych czasowych użytkowników może prowadzić do wycieku danych - model uczy się na pamięć cech konkretnej osoby. Zastosowano dwustopniowe zabezpieczenie:
