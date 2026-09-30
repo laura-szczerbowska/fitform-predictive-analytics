@@ -164,7 +164,10 @@ The symulacja_wagi function runs an iterative forward forecast over a 30-day hor
 
 ## 5. Model Explainability & Feature Impact Visualization
 
-> **Note:** The visualizations and trajectory analyses below are evaluated separately from the 30-day forward scenario simulation above—they reflect model behavior, feature importance, and historical backtesting directly derived from actual database records.
+> **Note:** The visualizations and trajectory analyses below are evaluated separately from the 30-day forward scenario simulation above - they reflect model behavior, feature importance, and historical backtesting directly derived from actual database records.
+
+
+<br>
 
 
 #### PFI (Permutation Feature Importance)
