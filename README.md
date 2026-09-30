@@ -52,7 +52,7 @@ Data used for analysis and model training originates from a relational PostgreSQ
 
 #### The dataset combines two primary sources:
 
-* **Empirical data (5 real users):** A 3-month continuous history of daily entries from live individuals, capturing natural habits, irregular logging, measurement errors, and authentic biological weight trajectories.
+* **Empirical data (5 real users):** A 77 days continuous history of daily entries from live individuals, capturing natural habits, irregular logging, measurement errors, and authentic biological weight trajectories.
 
 * **Synthetic data (Faker):** A structured cohort generated under a custom schema modeling diverse behavioral profiles - from textbook adherence (high consistency, stable deficit/surplus) to edge cases (irregular weigh-ins, episodic caloric spikes, extreme activity levels, illness).
   
