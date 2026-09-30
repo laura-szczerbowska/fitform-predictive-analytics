@@ -57,7 +57,7 @@ Dane wykorzystane do przeprowadzania analizy i treningu modeli pochodzą z relac
 
 #### Zbiór łączy dwa źródła danych:
 
-* **Dane empiryczne (5 rzeczywistych użytkowników):** 3-miesięczna historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
+* **Dane empiryczne (5 rzeczywistych użytkowników):** 77-dniowa historia codziennych wpisów od żywych osób, odzwierciedlające naturalne, nieregularne nawyki, błędy pomiarowe oraz rzeczywiste zmiany masy ciała.
 
 * **Dane syntetyczne (Faker):** Ustrukturyzowana kohorta wygenerowana według dedykowanego schematu symulującego zróżnicowane zachowania - od profili wzorcowych (wysoka regularność, stabilny deficyt/nadwyżka) po przypadki skrajne (duża nieregularność ważeń, epizodyczne skoki kaloryczne, skrajne poziomy aktywności, choroby).
   
@@ -157,14 +157,19 @@ Przetestowano 10 zróżnicowanych algorytmów uczenia maszynowego - od modeli li
 
 ## Symulacja scenariuszowa
 
-Zaimplementowano funkcję symulacji krokowej (`symulacja_wagi`), która testuje stabilność modeli w 30-dniowym horyzoncie czasowym przy zadanym scenariuszu (np. waga początkowa 85 kg, deficyt kaloryczny, 14 000 kroków, trening siłowy):
-* **Weryfikacja kumulacji błędów:** Sprawdzono, czy w iteracyjnym prognozowaniu dzień po dniu modele nie generują nierealistycznych odchyleń metabolicznych.
-* **Wartość:** Mechanizm ten stanowi podstawę modułu symulatora w aplikacji FitForm, umożliwiając użytkownikowi podejrzenie prognozowanego efektu sylwetkowego przed podjęciem planu treningowego.
+Funkcja symulacja_wagi realizuje iteracyjną prognozę w 30-dniowym horyzoncie dla stałych parametrów (waga startowa 85 kg, deficyt kaloryczny, 14 000 kroków):
+* **Weryfikacja kumulacji błędów:** Potwierdza, że rekurencyjne przeliczanie wskaźników per kg masy ciała nie powoduje nawarstwiania błędów ani rozbieżności modelu.
+* **Wartość:** Stanowi fundament modułu symulacji w aplikacji FitForm, umożliwiając użytkownikom wizualizację prognozowanych efektów przed wdrożeniem planu.
 
 <br>
 
 
 ## 5. Wyjaśnialność modeli i wizualizacja wpływu cech
+
+> **Uwaga:** Poniższe analizy i wizualizacje są generowane niezależnie od 30-dniowej symulacji scenariusza - przedstawiają one wyjaśnialność cech oraz dopasowanie modeli obliczone bezpośrednio na rzeczywistych danych z bazy.
+
+
+<br>
 
 
 #### PFI (Permutation Feature Importance )
@@ -218,7 +223,7 @@ Weryfikacja dobowych predykcji na osi czasu względem danych rzeczywistych dla p
 
 ![Dopasowanie predykcji modeli do danych rzeczywistych na osi czasu](static/models_timeline_comparison.png)
 
-> **Komentarz do wykresu:** Wykres przedstawia 40-dniową symulację krokową. Podczas gdy modele drzewiaste (LightGBM, XGBoost) bezbłędnie utrzymały zadany trend metaboliczny bez efektu dryfu, silnie regularyzowane modele liniowe (Elastic Net) wykazały niedouczenie (underfitting), tłumiąc dobową dynamikę zmian.
+> **Komentarz do wykresu:** Wykres przedstawia 40-etapowy backtest skumulowanej trajektorii wagi na rzeczywistych danych użytkownika. Modele drzewiaste (LightGBM, XGBoost, Ensemble) precyzyjnie odwzorowały faktyczny trend metaboliczny bez efektu dryfu, podczas gdy regularyzowane modele liniowe (Elastic Net) wykazały niedouczenie, nadmiernie wygaszając codzienne wahania wagi.
 
 <br>
 
