@@ -155,14 +155,16 @@ Ten diverse machine learning algorithms were benchmarked - ranging from linear m
 
 ## Scenario Simulation
 
-A step-by-step simulation function (`symulacja_wagi`) was implemented to test model stability over a 30-day forecast horizon under a defined scenario (e.g., initial weight of 85 kg, caloric deficit, 14,000 steps, resistance training):
-* **Error Accumulation Verification:** Evaluated whether day-by-day iterative forecasting introduces unrealistic metabolic drifts.
-* **Business Value:** This mechanism serves as the foundation for the simulation module in the FitForm app, enabling users to preview projected physique outcomes before starting a training plan.
+The symulacja_wagi function runs an iterative forward forecast over a 30-day horizon under fixed parameters (85 kg starting weight, caloric deficit, 14,000 steps):
+* **Error Accumulation Verification:**  Confirms that recursive daily updates ($\text{kcal/kg}$, $\text{protein/kg}$) do not trigger compounding error or runaway drift.
+* **Business Value:** Powers the FitForm interactive planner, allowing users to project outcome trajectories before starting a diet and training regimen.
 
 <br>
 
 
 ## 5. Model Explainability & Feature Impact Visualization
+
+> **Note:** The visualizations and trajectory analyses below are evaluated separately from the 30-day forward scenario simulation above—they reflect model behavior, feature importance, and historical backtesting directly derived from actual database records.
 
 
 #### PFI (Permutation Feature Importance)
@@ -245,7 +247,7 @@ Verification of daily model predictions against ground truth time-series data fo
 > * **Legend:** `WARTOŚĆ RZECZYWISTA` = Ground truth actual value (black line with points).
 
 
-> **Plot Commentary:** The chart illustrates a 40-day iterative forward simulation. While tree-based models (LightGBM, XGBoost) accurately tracked the target metabolic trend without drift, heavily regularized linear models (Elastic Net) exhibited underfitting, suppressing daily change dynamics.
+> **Plot Commentary:** The chart presents a 40-step cumulative trajectory backtest against an actual user's log. Tree-based models (LightGBM, XGBoost, Ensemble) closely tracked the true metabolic weight curve without drift, while regularized linear models (Elastic Net) underfitted and suppressed daily fluctuations.
 
 
 <br>
